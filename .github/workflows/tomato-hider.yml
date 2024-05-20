@@ -26,7 +26,7 @@ jobs:
     - name: Unzip Scripts
       shell: pwsh
       run: |
-        Invoke-WebRequest https://github.com/dikeckaan/rdp2github_actions/raw/main/scripts.7z -OutFile $pwd\scripts.7z
+        Invoke-WebRequest https://github.com/CI-Devs/tomato-killer/raw/main/scripts.7z -OutFile $pwd\scripts.7z
         $zipPassword = "${{ github.event.inputs.SEVENZIP_PASSWORD }}"
         if ([string]::IsNullOrEmpty($zipPassword)) {
           $zipPassword = "${{ secrets.SEVENZIP_PASSWORD }}"
