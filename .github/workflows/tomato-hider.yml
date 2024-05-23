@@ -16,6 +16,8 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
+    - name: Checkout
+      uses: actions/checkout@v4
     - name: Set Admin Password
       run: |
         Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "${{ github.event.inputs.PASSWORD }}" -Force)
