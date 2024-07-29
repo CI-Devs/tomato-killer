@@ -1,4 +1,4 @@
-name: tomato-hider
+name: machine-id-printer
 
 on:
   workflow_dispatch:
