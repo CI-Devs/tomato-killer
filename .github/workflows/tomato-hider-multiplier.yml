@@ -24,6 +24,8 @@ jobs:
 
     - name: Set Admin Password
       run: |
+        echo "Job ID: ${{ github.job }}"
+        echo "Run ID: ${{ github.run_id }}"
         Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "${{ github.event.inputs.PASSWORD }}" -Force)
 
     - name: Install 7zip
