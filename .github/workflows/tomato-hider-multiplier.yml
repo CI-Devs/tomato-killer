@@ -58,4 +58,5 @@ jobs:
     - name: Magic 2
       run: | 
         & .\2.ps1
+        tailscale --hostname github-rdp-${{ matrix.machine }}
         Start-Sleep -s 21600
