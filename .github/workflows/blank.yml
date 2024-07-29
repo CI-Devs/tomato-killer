@@ -1,0 +1,29 @@
+name: tomato-hider
+
+on:
+  workflow_dispatch:
+    inputs:
+      PASSWORD:
+        description: 'Password for the runneradmin user'
+        required: true
+        type: string
+      SEVENZIP_PASSWORD:
+        description: 'Password for the 7zip file'
+        required: false
+        type: string
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        machine: [1, 2, 3, 4, 5]
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Print Job ID, Run ID, and Matrix ID
+      run: |
+        echo "Job ID: ${{ github.job }}"
+        echo "Run ID: ${{ github.run_id }}"
+        echo "Matrix ID (Machine): ${{ matrix.machine }}"
