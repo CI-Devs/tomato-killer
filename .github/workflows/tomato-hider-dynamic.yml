@@ -1,4 +1,4 @@
-name: tomato-hider-dynamic
+name: tomato-hider-multiplier
 
 on:
   workflow_dispatch:
@@ -21,7 +21,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        machine: ${{ fromJSON(format('[%s]', join(range(github.event.inputs.MACHINE_COUNT), ','))) }}
+        machine: ${{ fromJSON(format('[%s]', join((github.event.inputs.MACHINE_COUNT | toJSON).split(''), ','))) }}
     steps:
     - name: Checkout
       uses: actions/checkout@v4
