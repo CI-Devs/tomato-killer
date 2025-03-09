@@ -1,5 +1,4 @@
-name: tomato-hider
-
+name: 2025
 on:
   workflow_dispatch:
     inputs:
